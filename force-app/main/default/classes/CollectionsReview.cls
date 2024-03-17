@@ -34,7 +34,6 @@ public with sharing class CollectionsReview {
 
         //Let's do one together!  Using System.debug, print out the value Frank by referencing its index
         System.debug('Print Frank' = firstNames[2]);
-
     }
 									
     public static void allAboutSets() {
