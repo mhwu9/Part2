@@ -33,7 +33,7 @@ public with sharing class CollectionsReview {
         System.debug('Value of 0 Index:' + firstNames[0]);
 
         //Let's do one together!  Using System.debug, print out the value Frank by referencing its index
-
+        System.debug('Print Frank' = firstNames[2]);
 
     }
 									
