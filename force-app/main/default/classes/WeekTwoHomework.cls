@@ -25,11 +25,13 @@ public with sharing class WeekTwoHomework {
             }
         }
     }
+    
     public static void taskCOpportunityMap() {
         //Create a new map, then place the SOQL queried Opportunities into the map
         Map<Id, Opportunity> opportunityMap = new Map<Id,Opportunity>([SELECT Id, Name FROM Opportunity]);
         System.debug(opportunityMap);
     }
+
     public static void taskDCountOpenOpps{
         Integer countOpenOpps = [
             SELECT COUNT() from Opportunity WHERE IsClosed = TRUE];
