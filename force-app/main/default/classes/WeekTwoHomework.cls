@@ -13,7 +13,7 @@ public with sharing class WeekTwoHomework {
         /*Get a list of Accounts and their closed-won Opportunities in a subquery. 
         Note, I decided to get only Accounts that have closed-won Opportunities; if you want all Accounts, leave the WHERE id part off) */
         List<Account> accountsAndClosedWonOpps = [
-            SELECT Name, (SELECT Name FROM Opportunities) FROM Account 
+            SELECT Name, (SELECT Name FROM Opportunities WHERE IsWon = TRUE) FROM Account 
             WHERE id IN (SELECT accountId FROM Opportunity WHERE IsWon = TRUE)];
         //Create a loop of Accounts to loop through and display their closed-won Opportunities
         for (Account aa: accountsAndClosedWonOpps) {
