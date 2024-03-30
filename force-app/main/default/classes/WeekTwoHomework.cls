@@ -35,7 +35,7 @@ public with sharing class WeekTwoHomework {
     public static Integer taskDCountOpenOpps() {
         //Create an Interger, and assign the aggregate count of Opportunities
         Integer countOpenOpps = [
-            SELECT COUNT() from Opportunity WHERE IsClosed = TRUE];
+            SELECT COUNT() from Opportunity WHERE IsClosed = FALSE];
         System.debug('There are ' + countOpenOpps + ' open Opportunities.'); 
         return countOpenOpps;   
     }
