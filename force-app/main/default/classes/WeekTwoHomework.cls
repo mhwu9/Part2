@@ -32,10 +32,11 @@ public with sharing class WeekTwoHomework {
         System.debug(opportunityMap);
     }
 
-    public static void taskDCountOpenOpps() {
+    public static Integer taskDCountOpenOpps() {
         //Create an Interger, and assign the aggregate count of Opportunities
         Integer countOpenOpps = [
             SELECT COUNT() from Opportunity WHERE IsClosed = TRUE];
-        System.debug('There are ' + countOpenOpps + ' open Opportunities.');    
+        System.debug('There are ' + countOpenOpps + ' open Opportunities.'); 
+        return countOpenOpps;   
     }
 }
