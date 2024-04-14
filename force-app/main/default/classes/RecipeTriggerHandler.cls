@@ -75,20 +75,26 @@ public with sharing class RecipeTriggerHandler {
     }
 
     public void createReview() {
-        List<Cookbook__c> listCookbooks = new List<Cookbook__c>([SELECT Id, OwnerId FROM Cookbook__c WHERE Id IN (SELECT Cookbook__c FROM Recipe_Usage__c WHERE Recipe__r.Draft__c = FALSE AND Recipe__r.Id IN : this.newRecipeList)]);
         List<Task> listTaskstoCreate = new List<Task>();
+        List<Recipe__c> listNotDraftRecipes = new List<Recipe__c>();
+        for (Recipe__c rr3 : this.newRecipeList) {
+            if(rr3.Draft__c == FALSE) {
+                listNotDraftRecipes.add(rr3);
+            }
+        }
 
-        for(Cookbook__c cb : listCookbooks) {
-            Task varTask = new Task(
+        Set<Cookbook__c> setCookbooks = new Set<Cookbook__c>([SELECT Id, OwnerId FROM Cookbook__c WHERE Id IN (SELECT Cookbook__c FROM Recipe_Usage__c WHERE Recipe__r.Draft__c = FALSE AND Recipe__c IN : listNotDraftRecipes)]);
+        for (Cookbook__c cb : setCookbooks) {
+            Task newTask = new Task(
                 OwnerId = cb.OwnerId,
                 ActivityDate = System.Today() + 7,
                 Subject = 'Review updated recipe(s) for your cookbook',
                 WhatId = cb.Id
             );
-            listTaskstoCreate.add(varTask);
+            listTaskstoCreate.add(newTask);
         }
         if(listTaskstoCreate.size() > 0) {
-        INSERT listTaskstoCreate;
-        }
+            INSERT listTaskstoCreate;
+        } 
     }
 }
