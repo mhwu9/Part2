@@ -1,4 +1,4 @@
-trigger RecipeTrigger on Recipe__c (before insert) {
+trigger RecipeTrigger on Recipe__c (before insert, before update, after insert, after update) {
     
     //Instantiate handler 
     RecipeTriggerHandler handler = new RecipeTriggerHandler(Trigger.new);
