@@ -60,8 +60,7 @@ public with sharing class LeadTriggerHandler {
         List<Task> newTasks = new List<Task>();
 
         Task newTask = new Task();
-        //not usually a static value but for the purposes of this exercise
-            newTask.OwnerId = '005ak000002IhgUAAS';
+            newTask.OwnerId = UserInfo.getUserId();
             newTask.ActivityDate = System.today() + 7;
 
         for (Lead ll2 : this.actionLeadList) {
