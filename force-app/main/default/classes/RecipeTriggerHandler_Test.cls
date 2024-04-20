@@ -1,18 +1,19 @@
 @IsTest
 private class RecipeTriggerHandler_Test {
 
-    //I'm not sure how to add in tests for recursion control, so I'll just leave the fragments of my efforts
-/*  @IsTest
-    
+    //still can't quite figure out how to test recursion check return. I did learn about @TestVisible, but how to trigger the return?
+/*
+    @IsTest
     static void handleBeforeInsert() {
-        RecipeTriggerHandler testHandler = new RecipeTriggerHandler(Trigger.new);
         Recipe__c testRecipe = new Recipe__c (
             Name = 'Test Recipe'
         );
         Test.startTest();
-            INSERT testRecipe;
+        INSERT testRecipe;
+        Boolean hasRunOnce = RecipeTriggerHandler.hasRunOnce;
+        UPDATE testRecipe;
+        System.assertEquals(TRUE, hasRunOnce, 'Expect has run once to be True');
         Test.stopTest();
-        System.assertEquals(testHandler.hasRunOnce, TRUE,'Expect has run once to be True');
     }
     
     @IsTest

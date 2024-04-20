@@ -1,7 +1,7 @@
 public with sharing class RecipeTriggerHandler {
 
     //Recursion control
-    static Boolean hasRunOnce = false;
+    @Testvisible static Boolean hasRunOnce = false;
 
     //Instantiating Class variables
     List<Recipe__c> newRecipeList;
