@@ -53,7 +53,9 @@ public with sharing class RecipeTriggerHandler {
     public void missingValuesCheck() {
         for (Recipe__c rr1 : this.newRecipeList) {
             if(rr1.Name == null || rr1.Active_Time__c == null || rr1.Description__c == null || rr1.Active_Time_Units__c == null || rr1.Servings__c == null) {
-                rr1.Draft__c = TRUE;
+                //changing requirement Week 6
+                //rr1.Draft__c = TRUE;
+                rr1.addError('Missing required fields.');
             }
         }
     }
@@ -61,7 +63,7 @@ public with sharing class RecipeTriggerHandler {
     public void complexityRating() {
         for (Recipe__c rr2 : this.newRecipeList) {
             Integer intComplexity = HelperFunctions.rateRecipeComplexity(rr2);
-                if(intComplexity == 3) {
+                if(intComplexity >= 3) {
                     rr2.Complexity__c = 'Difficult';
                 }
                 else if (intComplexity == 2) {

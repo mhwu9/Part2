@@ -31,6 +31,8 @@ private class RecipeTriggerHandler_Test {
         //test
     }
 */
+
+/* changed requirements Week 6
     @IsTest
     static void missingValuesCheckTestFull() {
         List<Recipe__c> testRecipeList = new List<Recipe__c> ();
@@ -93,6 +95,46 @@ private class RecipeTriggerHandler_Test {
         System.assertEquals(TRUE, reviewRecipeList[4].Draft__c, 'Expected record missing values to be marked as draft');
         System.assertEquals(FALSE, reviewRecipeList[5].Draft__c, 'Expected record with all values to not be marked as draft');
     }
+*/
+
+    @IsTest
+    static void missingValuesCheckTestNegative() {
+        List<Recipe__c> testRecipeList = new List<Recipe__c> ();
+        
+        Recipe__c testRecipe = new Recipe__c (
+            Name = 'Test All Blank Recipe'
+        );
+        testRecipeList.add(testRecipe);
+        try {
+            Test.startTest();
+                INSERT testRecipeList;
+                Assert.fail('Should have thrown exception.');
+            Test.stopTest();
+            }
+        catch (Exception e) {
+            System.debug('Exception caught: ' + e.getMessage());
+            }
+    }
+
+    @IsTest
+    static void missingValuesCheckTestPositive() {
+        List<Recipe__c> testRecipeList = new List<Recipe__c> ();
+        Recipe__c testRecipe = new Recipe__c (
+            Name = 'Test All Populated Recipe',
+            Active_Time_Units__c = 'Hours',
+            Active_Time__c = 1,
+            Servings__c = 4,
+            Description__c = 'This is the test recipe.'
+        );
+        testRecipeList.add(testRecipe);
+
+        Test.startTest();
+            INSERT testRecipeList;
+        Test.stopTest();
+
+        List<Recipe__c> reviewRecipeList = [SELECT ID, Draft__c FROM Recipe__c WHERE Id IN :testRecipeList];
+        System.assertEquals(1, reviewRecipeList.size(), 'Expected record with all values to not throw exception and be found');
+        }
 
     @IsTest
     static void complexityRatingTestSimple() {
@@ -168,5 +210,37 @@ private class RecipeTriggerHandler_Test {
         System.assertEquals(1,taskList.size(),'There should be one task.');
         System.assertEquals(testCookbook.id, taskList[0].WhatId, 'Task should be related to Cookbook');
         System.assertEquals(system.today()+7,taskList[0].ActivityDAte, 'Task should be due in 7 days');
+    }
+
+    @IsTest
+    static void createReviewTestNegative() {
+        Recipe__c testRecipe = new Recipe__c (
+            Name = 'Test Draft Recipe',
+            Active_Time_Units__c = 'Hours',
+            Active_Time__c = 1,
+            Description__c = 'This is the test draft recipe.'
+        );
+        INSERT testRecipe;
+        
+        Cookbook__c testCookBook = new Cookbook__c (
+            Name = 'Test Cookbook'
+        );
+        INSERT testCookbook;
+
+        Recipe_Usage__c testRecipeUsage = new Recipe_Usage__c (
+            Recipe__c = testRecipe.Id,
+            Cookbook__c = testCookbook.Id
+        );
+        INSERT testRecipeUsage;
+
+        testRecipe.Contains_Allergins__c = TRUE;
+
+        Test.startTest();
+            UPDATE testRecipe;
+        Test.stopTest();
+        
+        List<Task> taskList = [SELECT Id, WhatId, ActivityDate FROM Task];
+
+        System.assertEquals(0,taskList.size(),'There should be no task because recipe is still in draft.');
     }
 }
